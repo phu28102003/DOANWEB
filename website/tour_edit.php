@@ -5,14 +5,17 @@ if (!isset($_SESSION["Tour_add_error"])){
 		$_SESSION["Tour_add_error"]="";
 	
 }
+$TourID= $_GET["TourID"];
+
 $sql1 ="select * from category";
 $rs1 = $conn->query($sql1);
 
-$sql2 ="select * from tour where TourID=".$_GET["TourID"];
+$sql2 ="select * from tour where TourID=".$TourID;
 $rs2 = $conn->query($sql2);
 if ($rs2->num_rows > 0) {
     $row2 = $rs2->fetch_assoc();
 }
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -50,8 +53,12 @@ if ($rs2->num_rows > 0) {
 
     <body>
         <alert class="container container-fluid "><?php echo $_SESSION["Tour_add_error"] ?></alert>
-        <h1 class="container text-primary text-center"> THÊM TOUR</h1>
-        <form method="post" action="/../controller/tour_edit_action.php" class="container container-fluid" onsubmit="return validateForm()" enctype="multipart/form-data">
+        <h1 class="container text-primary text-center"> Sửa Tour <?php echo $row2["TourName"]?></h1>
+        <div class="row">
+            <div class="col-sm-10"></div>
+            <a href="/../website/tour_view.php?TourName=" class="col-sm-1 btn btn-secondary">Trở Về</a>
+        </div>
+        <form method="post" action="/../controller/tour_edit_action.php?TourID=<?php echo $TourID ?>" class="container container-fluid" onsubmit="return validateForm()" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="TourName" class="form-label">Tên Tour</label>
                 <input type="text" class="form-control" id="TourName" name="TourName" value="<?php echo $row2["TourName"] ?>">

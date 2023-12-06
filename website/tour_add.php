@@ -33,6 +33,10 @@ $rs1 = $conn->query($sql1);
     <body>
         <alert class="container container-fluid "><?php echo $_SESSION["Tour_add_error"] ?></alert>
         <h1 class="container text-primary text-center"> THÊM TOUR</h1>
+        <div class="row">
+            <div class="col-sm-10"></div>
+            <a href="/../website/tour_view.php?TourName=" class="col-sm-1 btn btn-secondary">Trở Về</a>
+        </div>
         <form method="post" action="/../controller/tour_add_action.php" class="container container-fluid" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="TourName" class="form-label">Tên Tour</label>

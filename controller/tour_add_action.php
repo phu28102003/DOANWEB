@@ -45,16 +45,13 @@
 
         $sql = "INSERT INTO Tour (TourName, TourDesc, TourImage, TourPriceAd, TourPriceCh, TourStartDate, TourDayNum, TourNightNum, TourItinerary, TourTransportation, TourDeparture, TourMaxPeople, TourStatus, CateID)
         VALUES ('$TourName','$TourDesc', '$imagesTour','$TourPriceAd','$TourPriceCh','$dateStart','$TourDayNum', '$TourNightNum','$TourItinerary' ,'$TourTransportation','$TourDeparture','$TourMaxPeople','$TourStatus','$CateID')";
-        $conn->query($sql) or die($conn->error);
+        $conn->query($sql) ;
         
         if($conn->error==""){
             $duong_dan_day_du = __DIR__."/../img/tour/$NewID"."/";
             // Tạo thư mục mới
             if (!file_exists($duong_dan_day_du)) {
                 mkdir($duong_dan_day_du, 0777, true); // 0777 là quyền truy cập, true để tạo cả các thư mục cha nếu chưa tồn tại
-                foreach ($_FILES["imageTour"]["name"] as $imagesTour) {
-                    
-                }
                 for($i=0; $i< count($_FILES["imageTour"]["name"]); $i++){
                     move_uploaded_file($_FILES['imageTour']['tmp_name'][$i],$duong_dan_day_du.$_FILES["imageTour"]["name"][$i]);
                 }
