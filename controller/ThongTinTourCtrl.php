@@ -38,16 +38,28 @@
         $CateStatus = $row['CateStatus'];
     }
     
-        $sql1 = "SELECT TourStartDate FROM tour WHERE TourName = \"$TourName\" and month(TourStartDate) = month(curdate()) limit 3";
-                    $result1 = $conn->query($sql1);
-                    $DateTours = array();
-                    if ($result1->num_rows > 0) {
-                        While($row1 = $result1->fetch_assoc()){
-                            $dateTime = new DateTime($row1["TourStartDate"]);
-                            $formattedDate = $dateTime->format('d/m');
-                            $DateTours[] = $formattedDate;
-                        }
-                    }
+    $sql1 = "SELECT TourStartDate FROM tour WHERE TourName = \"$TourName\" and month(TourStartDate) = month(curdate()) limit 3";
+    $result1 = $conn->query($sql1);
+    $DateTours = array();
+    $DateTours1 = array();
+    if ($result1->num_rows > 0) {
+        While($row1 = $result1->fetch_assoc()){
+            $dateTime = new DateTime($row1["TourStartDate"]);
+            $formattedDate = $dateTime->format('d/m');
+            $DateTours[] = $formattedDate;
+
+            $formattedDate1 = $dateTime->format('Y-m-d');
+            $DateTours1[] = $formattedDate1;
+        }
+        for ($i=0; $i<count($DateTours); $i++) {
+            $sql2 = "select TourID from tour where TourStartDate='$DateTours1[$i]' and TourName='$TourName'";
+            $result2 = $conn->query($sql2);
+            if($result2->num_rows>0){
+                $row2 = $result2->fetch_assoc();
+                $TourID[] = $row2["TourID"];
+            }    
+        }
+    }
                     
 
     

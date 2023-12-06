@@ -11,21 +11,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/../js/ThongTinTour.js"></script>
     <script>
-        
+        function updateTotalPrice() {
+            // Lấy giá trị từ ô input Người Lớn và Trẻ Em
+            var numOfAd = document.getElementsByName('NumOfAd')[0].value;
+            var numOfCh = document.getElementsByName('NumOfCh')[0].value;
+
+            // Giá tour cho Người Lớn và Trẻ Em
+            var tourPriceAd = <?php echo $TourPriceAd; ?>;
+            var tourPriceCh = <?php echo $TourPriceCh; ?>;
+
+            // Tính tổng cộng
+            var totalPrice = (numOfAd * tourPriceAd) + (numOfCh * tourPriceCh);
+
+            // Hiển thị tổng cộng lên trang
+            document.getElementById('TotalPrice').innerHTML = totalPrice;
+        }
     </script>
     <style>
         .table-content {
-            max-width: 100%; /* Chiều rộng tối đa */
-            word-wrap: break-word; /* Tự động xuống dòng khi cần */
+            max-width: 100%;
+            /* Chiều rộng tối đa */
+            word-wrap: break-word;
+            /* Tự động xuống dòng khi cần */
         }
+        
         .fixed-content {
             position: sticky;
             top: 0;
-            background-color: white; /* Màu nền cho phần tử con */
-            padding: 10px; /* Padding cho phần tử con */
-            height:750px;
-            }
+            background-color: white;
+            /* Màu nền cho phần tử con */
+            padding: 10px;
+            /* Padding cho phần tử con */
+            height: 750px;
+        }
     </style>
 </head>
 
@@ -133,26 +153,41 @@
             </div>
             <div class="col-sm-4" style="position: relative">
                 <div class="container fixed-content border">
-                    <h3 class="text-primary">Lịch Khởi Hành & Giá</h3>
-                    <p>Chọn Ngày Khởi Hành:</p>
-                    <div class="">
-                    <?php 
-                        foreach ($DateTours as $TourStartDate) {
-                            echo "<div class=\"col-sm-4 btn btn-primary border p-2\" style=\"font-size: 18px;\">$TourStartDate</div>";
-                        }
-                    ?>
-                    <input class="form-control mt-2 pt-4 pb-4" type="date">
-                    <div class="container row pt-3">
-                        <p class="col-sm-4">Người Lớn</p> 
-                        <?php echo "<h6 class=\"text-warning col-sm-4\">x$TourPriceAd</h6>" ?>
-                        <input class="form-control mt-2 col-sm-4" style="width:110px" type="number" min=0>
-                    </div>
-                    <div class="container row pt-3">
-                        <p class="col-sm-4">Trẻ Em</p> 
-                        <?php echo "<h6 class=\"text-warning col-sm-4\">x$TourPriceAd</h6>" ?>
-                        <input class="form-control mt-2 col-sm-4" style="width:110px" type="number" min=0>
-                    </div>
-                    </div>
+                    <form method="POST" action="/../a.php">
+                        <h3 class="text-primary">Lịch Khởi Hành & Giá</h3>
+                        <p>Chọn Ngày Khởi Hành:</p>
+                        <div class="">
+                            <?php 
+                                for ($i=0; $i<count($DateTours); $i++) {
+                                    echo "<a href=\"/website/ThongTinTour.php?TourID=$TourID[$i]\" class=\"col-sm-4 btn btn-primary border p-2 TourStartDate\" name=\"cc\" onclick=\"changeClass(this)\" style=\"font-size: 18px;\">$DateTours[$i]</a>";
+                                }
+                            ?>
+                            <div class="row mt-2 pt-4 pb-4 border border-start-0 border-end-0">
+                                <p class="col-sm-4">Người Lớn</p>
+                                <?php echo "<h5 class=\"text-warning col-sm-4\">x$TourPriceAd</h5>" ?>
+                                <input class="form-control mt-2 col-sm-4" style="width:110px" name="NumOfAd" type="number" min="0" onchange="updateTotalPrice()">
+                            </div>
+
+                            <div class="row mt-2 pt-4 pb-4 border border-start-0 border-end-0">
+                                <p class="col-sm-4">Trẻ Em</p>
+                                <?php echo "<h5 class=\"text-warning col-sm-4\">x$TourPriceCh</h5>" ?>
+                                <input class="form-control mt-2 col-sm-4" style="width:110px" name="NumOfCh" type="number" min="0" onchange="updateTotalPrice()">
+                            </div>
+
+                            <div class="row mt-2 pt-4">
+                                <h5 class="col-sm-5">Tổng cộng:
+                                    <?php echo "<h5 class=\"text-warning col-sm-5\" id=\"TotalPrice\" name=\"TotalPrice\"></h5>" ?>
+                                </h5>
+                                <p class="col-sm-2">VNĐ</p>
+                            </div>
+
+                            <div class="row mt-5 pb-5">
+                                <p class="col-sm-8"></p>
+                                <button class="col-sm-4 btn btn-warning text-white" type="submit">Thanh Toán</button>
+                            </div>
+
+                        </d>
+                    </form>
                 </div>
             </div>
         </div>
